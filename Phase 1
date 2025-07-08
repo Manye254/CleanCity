@@ -1,0 +1,374 @@
+1. Introduction
+This document outlines the comprehensive test plan for the "CleanCity: Waste Pickup Scheduler" web application. This application, built with React, simulates a waste management system for African cities (with a focus on a Kenyan context for this project), and is specifically designed with intentional flaws to provide practical manual and automated testing experience for QA students.
+This plan details the testing scope, objectives, strategy, required test environments and tools, test data management, defect reporting standards, and the initial Jira project setup. It aims to ensure a systematic, effective, and educational testing process that thoroughly evaluates the application's quality and identifies all relevant defects, including the intentionally introduced ones.
+
+Initial Project Setup Context:
+As per the repository initialization, the project structure is established, a tests/ folder exists, and this initial test plan and strategy are being documented within test-plan.md. Team member roles and responsibilities, along with initial setup scripts and environment notes, are also being documented concurrently to ensure a smooth start to the QA efforts.
+ 2. Test Strategy
+The testing strategy for the CleanCity application will adopt a hybrid approach, integrating both structured manual testing and progressive test automation. Given the application's unique purpose as a learning tool with deliberately introduced flaws, exploratory testing will be a crucial component to encourage deeper investigation and defect discovery.
+
+Key Strategic Principles:
+Risk-Based Prioritization: Testing efforts will be prioritized based on the criticality of application features, the potential impact of defects, and areas known or suspected to contain intentional flaws. Core functionalities, such as user authentication, user registration, and the waste pickup scheduling process, will receive the highest testing focus.
+Agile Integration: Testing activities will be seamlessly integrated into the agile development sprints. QA team members will actively participate in all agile ceremonies, including sprint planning, daily stand-ups, and sprint reviews, to ensure continuous testing from the earliest stages of development.
+Traceability: A robust traceability matrix will be maintained to link all test cases directly to their corresponding requirements, user stories, or documented intentional flaws. This ensures comprehensive test coverage and clear accountability for verification.
+Regression Focus: A strong emphasis will be placed on regression testing. As new features are developed and defects are fixed, automated regression tests will be the primary mechanism to ensure that existing functionalities remain stable and free from new regressions. Manual regression will supplement automation for areas not yet covered.
+Learning & Discovery: Testers are explicitly encouraged to utilize exploratory testing techniques. This approach is vital for uncovering unexpected defects and for identifying and analyzing the "intentional flaws" embedded within the application, thereby enhancing the practical learning experience for QA students.
+Continuous Feedback Loop: A clear and efficient feedback mechanism will be established between the development and QA teams to facilitate rapid defect resolution, foster collaboration, and promote continuous improvement of both the product and the development/testing processes.
+
+3. Testing Scope and Objectives
+This section clearly defines what will and will not be tested, and what the testing aims to achieve.
+3.1. In-Scope Features/Functionalities:
+    The following functional and non-functional aspects of the CleanCity web application are within the scope of this testing effort:
+
+    User Management Module:
+         User Registration: Verification of the registration process for Residents, Waste Collectors, and Admin roles, including validation of input fields and successful account creation.
+         User Authentication: Testing of login/logout functionality, including handling of valid/invalid credentials, session management, and password reset/change processes.
+         User Profile Management: Validation of viewing and editing personal and account details for all user roles.
+         Role-Based Access Control (RBAC): Comprehensive verification that users can only access features and data appropriate to their assigned role (e.g., Residents cannot accept pickups).
+    Waste Pickup Scheduling Module:
+         Pickup Request Creation: Residents' ability to create and submit new waste pickup requests, including selecting waste types, specifying locations, and preferred dates/times.
+         Pickup Viewing: Verification that Residents can view their own requests, Waste Collectors can view assigned/available requests, and Admins can view all requests.
+         Pickup Status Management: Testing the lifecycle of a pickup request, including status transitions (Pending, Scheduled, In Progress, Completed, Cancelled) and the ability of Waste Collectors to accept/reject requests.
+         Search and Filter: Validation of search and filter functionalities for pickup requests based on status, date range, location, waste type, and assigned collector.
+    Basic Reporting & Dashboard:
+         Summary Reports: Verification of basic dashboards providing summaries of pending, scheduled, and completed pickups for Admins and Waste Collectors.
+         User Statistics: Basic reporting on user accounts (total registered users, users by role) for Admin users.
+    Basic Notifications:
+         Confirmation Notifications: Testing of notifications sent upon successful pickup request submission.
+         Status Update Notifications: Verification of notifications sent when a pickup request's status changes.
+    User Interface (UI) & User Experience (UX):
+         Navigation: Ensuring intuitive and consistent navigation across the application.
+         Responsiveness: Verification of the application's layout and functionality across various screen sizes (desktop, tablet, mobile).
+         Input Validation: Testing client-side and server-side input validations to ensure data integrity and user guidance.
+
+3.2. Out-of-Scope Features/Functionalities:
+    The following areas are considered out-of-scope for the current testing phases to maintain focus and manage resources effectively:
+
+     Advanced Geographical Information System (GIS) features or complex route optimization algorithms for waste collection.
+     Integration with external payment gateways or complex billing systems (unless explicitly mocked or simplified within the application's design).
+     In-depth analytics and business intelligence reporting beyond the specified basic dashboards.
+     Extensive multi-language localization (only primary language will be tested for now, likely English with Kenyan context).
+     High-volume performance, load, and stress testing (basic performance sanity checks will be conducted as part of functional testing).
+     Penetration testing or advanced security audits (basic security checks will be performed as part of functional and negative testing).
+
+3.3. Testing Objectives:
+    The primary objectives of the CleanCity QA testing project are:
+    Functional Verification: To ensure that all implemented features and functionalities of the CleanCity application operate precisely as defined in the project requirements and design specifications.
+    Defect Identification & Documentation: To systematically identify, accurately document, and effectively report all bugs, errors, and discrepancies from expected behavior, including the intentionally introduced flaws.
+    Usability Assessment: To evaluate the application's intuitiveness, ease of use, and overall user-friendliness for all intended user roles (Residents, Waste Collectors, Admins).
+    Basic Performance & Stability: To confirm that the application is reasonably responsive under typical usage scenarios and remains stable without frequent crashes or unexpected behavior.
+    Security Baseline: To verify basic security measures, including proper authentication, authorization, and protection against common vulnerabilities (e.g., basic injection attempts, Cross-Site Scripting (XSS)).
+    Compatibility Assurance: To ensure consistent functionality and appearance across specified web browsers (Chrome, Firefox, Edge, Safari) and various mobile devices/screen resolutions.
+    Error Handling Validation: To confirm that the application gracefully handles invalid inputs, unexpected user actions, and system errors, providing clear and helpful feedback to the user.
+    Data Integrity: To validate that data is accurately created, retrieved, updated, and deleted, maintaining consistency and correctness across the application's database.
+    Requirement Traceability: To demonstrate that all defined requirements, user stories, and identified intentional flaws have adequate test coverage.
+    Educational Value: To provide QA students with hands-on experience in diverse testing methodologies, defect lifecycle management, and the practical application of industry-standard tools like Jira.
+
+4. Test Environments and Tools
+This section specifies the hardware, software, and tools required for testing.
+4.1. Test Environments:
+    A dedicated Staging/QA environment will serve as the primary testing ground, configured to closely mimic the anticipated production environment.
+    Primary Testing Environment: Staging/QA Environment
+        Client-Side Operating Systems:
+             Windows 10/11 (latest stable versions)
+        Web Browsers (latest stable versions):
+             Google Chrome
+             Mozilla Firefox
+             Microsoft Edge
+             Apple Safari
+        Mobile Devices
+             Android Smartphones 
+           
+        Backend & Database: The specific configurations (e.g., Node.js server, MongoDB database) for the QA environment will be provided and maintained by the development team, replicating the production setup. Environment notes will be maintained alongside initial setup scripts.
+    Development Environments: Individual developer machines will be used for unit and component testing by developers.
+    Production Environment: This environment will be used exclusively for User Acceptance Testing (UAT) by stakeholders and will not be directly used for routine QA team testing.
+
+4.2. Test Tools:
+    A comprehensive suite of tools will be utilized to support various testing activities:
+    Project Management & Defect Tracking:
+        Jira: This will be the central platform for managing the entire project lifecycle, including requirements, user stories, tasks, and critically, all defect tracking and management.
+    Test Case Management:
+        Xray for Jira (Recommended Add-on): Integrated directly with Jira, Xray will be used for defining, organizing, executing, and reporting on test cases. It allows for linking tests to requirements, managing test cycles, and generating detailed test execution reports. (Alternatively, if Xray is not available, custom Jira issue types like "Test Case" and "Test Run" will be configured).
+    Manual Testing Aids:
+        Browser Developer Tools: (Chrome DevTools, Firefox Developer Tools) Essential for inspecting HTML/CSS, monitoring network requests, viewing console logs for errors, and debugging JavaScript during manual testing.
+        Postman / Insomnia: For performing API testing, validating backend endpoints, and potentially mocking external service responses.
+        Screen Capture & Recording Tools: (e.g., ShareX, Snipping Tool, Loom, OBS Studio, built-in OS tools) to capture clear screenshots and video recordings for detailed defect documentation.
+    Automated Testing Frameworks:
+        UI/End-to-End (E2E) Testing:Playwright (chosen for its cross-browser capabilities, robust selectors, automatic waiting, and strong debugging features, which are highly beneficial for testing React applications and for QA students).
+        API Testing:Jest (for unit and integration testing of JavaScript code) combined with Supertest (for making HTTP assertions against API endpoints).
+        Programming Language: JavaScript / TypeScript (consistent with the React application).
+    Version Control:
+        Git: For managing all source code, test automation scripts, and test data in a centralized repository (GitHub, Bitbucket). The repository is already initialized with a tests/ folder.
+    Continuous Integration/Continuous Delivery (CI/CD):
+        GitHub Actions / Jenkins: To automate the execution of test suites (especially automated regression tests) upon code commits, pull requests, and on a scheduled basis, providing immediate feedback on code quality and preventing regressions. Initial setup scripts for CI/CD will be part of the documentation.
+
+ 5. Test Data Requirements
+Careful planning and management of test data are critical for thorough and reproducible testing.
+5.1. Test Data Generation Strategy:
+    Initial Database Seeding: The development team will provide scripts (documented as initial setup scripts) to populate the QA environment's database with a diverse, realistic, and anonymized baseline dataset. This includes various user roles, pre-existing pickup requests, and geographical information relevant to Kenyan cities (e.g., Nairobi, Mombasa, Kisumu).
+    Manual Data Creation: For specific, complex, or hard-to-automate scenarios, test data will be manually created directly through the application's User Interface (UI) or, if necessary, inserted directly into the database.
+    Automated Test Data Generation: For automated test scripts, dynamic data generation will be leveraged using libraries such as Faker.js. This ensures unique data for each test run, preventing data conflicts and increasing test robustness.
+    Pre-defined Datasets: Specific, reusable datasets ( CSV) for scenarios requiring consistent, predefined inputs will be maintained within the tests/data/ folder in the version control system.
+
+5.2. Required Test Data Categories:
+    User Accounts:
+         Valid accounts for each role: Resident, Waste Collector, Admin (multiple accounts per role with varying attributes like location, contact info).
+         Invalid accounts: Accounts with incorrect passwords, non-existent usernames/emails, or accounts in various states ( locked, unverified) for negative testing.
+         Users from diverse simulated geographical regions within a Kenyan city context ( different estates, residential areas).
+    Waste Pickup Requests:
+         Requests in all possible statuses: Pending, Scheduled, In Progress, Completed, Cancelled.
+         Requests with different waste types (e.g., organic, recyclable, hazardous, mixed waste).
+         Requests originating from various valid and invalid addresses/pickup locations within the simulated city ( residential, commercial, slum areas).
+         Requests scheduled for different dates and times (past, present, future) to test scheduling logic.
+         Requests with missing or invalid required data fields for input validation testing.
+    Geographical Data: A representative set of valid and invalid addresses, districts, or zones within the simulated Kenyan city to test location-based functionalities.
+    System Configuration Data: (If the application allows configuration) Data related to waste collection schedules, vehicle information, or specific city zones (specific dates for garbage collection in certain areas).
+
+5.3. Test Data Management Practices:
+    Version Control: All static test data files and data generation scripts will be stored and managed within the project's Git repository, specifically in the tests/data/ folder.
+    Anonymization & Privacy: All test data will be anonymized or synthetic; no real personally identifiable information (PII) or sensitive data will be used.
+    Clear Documentation: Each test data set will be clearly documented, explaining its purpose, the specific test scenarios it supports, and any expected outcomes. This documentation will reside alongside the test data.
+    Environment Reset: The QA environment's database will be reset to a known baseline state before major test cycles or significant deployments to ensure test consistency and prevent data dependencies between test runs. Initial setup scripts will facilitate this.
+
+ 6. Defect Reporting Standards
+A clear, consistent, and comprehensive approach to defect reporting is paramount for efficient communication between QA and development teams, leading to timely resolution. All identified defects will be tracked and managed within Jira.
+
+6.1. Defect Lifecycle (Jira Workflow):
+    The standard defect workflow within Jira for the CleanCity project will be as follows:
+
+    New: The initial status of a newly reported defect.
+    Open: The defect has been reviewed by the QA Lead or Product Owner, confirmed as valid, and assigned to a developer for investigation.
+    In Progress: The assigned developer is actively working on implementing a fix for the defect.
+    Resolved: The developer has implemented the fix and believes the defect is resolved. The issue is now ready for QA verification.
+    Reopened: The QA team has retested the defect after it was marked "Resolved" but found that the issue still persists, or a new related issue has been introduced by the fix. The defect is sent back to the developer.
+    Closed: The QA team has successfully verified the fix, and the defect is no longer reproducible. The functionality works as expected.
+    Deferred: The defect is acknowledged as valid but is intentionally postponed to a future release due to lower priority, scope changes, or resource constraints.
+    Rejected: The defect is deemed not to be a bug (e.g., works as designed, is a duplicate of an existing bug, is not reproducible, or is an invalid report).
+
+6.2. Mandatory Fields for Defect Reports in Jira:
+    To ensure clarity, reproducibility, and efficient triaging, every bug report in Jira must include the following mandatory information:
+
+    Summary: A concise, clear, and descriptive title that summarizes the bug (e.g., "Login button inactive after 3 failed attempts," "Pickup request form does not submit when waste type is not selected").
+    Description:
+        Steps to Reproduce: A numbered, clear, and precise list of steps that can be followed to consistently reproduce the bug.
+        Actual Results: A detailed description of what actually happened when following the steps.
+        Expected Results: A clear definition of what should have happened according to the requirements or design.
+        Observation: Any additional relevant details, context, or insights ("Observed in Chrome only," "Occurs intermittently").
+    Environment:
+        Browser (Name & Version): E.g., Chrome 126.0.0.0, Firefox 127.0.0.0.
+        Operating System: Windows 10, 11 
+        Device: Desktop, Samsung Galaxy.
+        URL: The specific URL or page where the bug was observed.
+        User Role: The specific user role used during testing ( Resident, Waste Collector, Admin).
+    Severity: Reflects the impact of the bug on the application's functionality and user experience.
+        Critical (P1): Application crash, data loss, blocks core business functionality, no workaround possible.
+        Major (P2): Significant functionality broken, major usability issue, a workaround exists but is inconvenient.
+        Minor (P3): Small functionality issue, UI glitch, inconsistent behavior, minor usability impact.
+        Trivial (P4): Cosmetic issue (e.g., typo in non-critical text, minor alignment issue), easily ignored, no functional impact.
+    Priority: Dictates the urgency with which the bug needs to be fixed.
+        Highest: Must be fixed immediately; blocks further testing or release.
+        High: Needs to be fixed in the current sprint/release.
+        Medium: Should be fixed in the current or next sprint.
+        Low: Can be fixed in a future sprint/release, non-critical.
+  
+    Assignee: The specific developer responsible for investigating and fixing the bug.
+    Reporter: The QA team member who identified and reported the bug.
+    Affected Version/Component: The specific application version (v1.0.0, v1.0.1-beta) and/or the affected component ("Authentication," "Scheduling Form," "Dashboard UI").
+    Labels: Relevant tags for easier filtering, categorization, and reporting ( bug, frontend, backend, security, UI/UX, data-validation, intentional-flaw).
+    Linked Issues: Links to related test cases, user stories, or other associated bugs to establish traceability.
+
+6.3. Best Practices for Defect Reporting:
+    Atomic: Each Jira issue should represent one distinct bug. If multiple issues are found, create separate tickets.
+    Objective: Describe the bug factually, avoiding subjective language, assumptions about the cause, or blaming.
+    Timely: Report bugs as soon as they are discovered to facilitate prompt investigation and resolution.
+    Reproducibility: Ensure the steps to reproduce are exceptionally clear and consistent, enabling any team member (developer, other QA) to replicate the issue without ambiguity.
+
+7. Jira Setup: CleanCity Project Configuration
+
+A dedicated Jira project will be meticulously set up to manage all aspects of the CleanCity development and testing lifecycle, providing a centralized platform for collaboration and tracking.
+
+7.1. Project Creation:
+    Project Name: CleanCity: Waste Pickup Scheduler
+    Project Key: CLEANCITY (A concise and unique identifier for the project)
+    Project Type: Scrum (This type is ideal for supporting agile development practices, enabling sprint management, backlogs, and agile boards.)
+    Project Lead/Administrator: [Designated Project Lead / Senior QA Engineer] - This individual will be responsible for the initial setup and ongoing administration of the Jira project.
+
+7.2. Issue Types Configuration:
+    The following issue types will be configured within the CleanCity Jira project to cover all development, testing, and project management needs:
+
+    Standard Jira Issue Types:
+        Epic: Used for high-level features or overarching themes that span multiple sprints ( "Implement User Authentication Module," "Develop Waste Pickup Scheduling Core").
+        Story: Represents user-centric requirements or features that deliver value to the end-user (e.g., "As a Resident, I want to submit a waste pickup request," "As a Waste Collector, I can view my assigned pickups").
+        Task: For general work items, technical tasks, or specific QA setup tasks that are not directly user stories (e.g., "Set up Playwright automation framework," "Create database seeding script," "Research optimal waste types").
+        Bug: Specifically designated for tracking and managing all identified defects, errors, or flaws in the application
+        Custom Issue Types (for Test Management - leveraging Xray for Jira):
+        Test: This issue type, provided by Xray, will represent a single, executable test case. It will contain fields for preconditions, detailed test steps, and expected results.
+        Test Set: An Xray issue type used to group related individual 'Tests' (test cases) for better organization ( "User Login Test Set," "Pickup Request Form Test Set").
+        Test Plan: An Xray issue type used to define a collection of Test Sets for a specific testing phase or release ( "Sprint 1 Regression Test Plan," "Release 1.0 Acceptance Testing Plan").
+        Test Execution: An Xray issue type that is automatically created when tests are executed from a Test Plan or Test Set. It tracks the actual execution results of individual tests (Passed, Failed, Skipped, Blocked) and allows linking to Bug issues.
+
+7.3. Screen Schemes & Field Configuration Schemes:
+    Screen Schemes: Configure distinct screens for each issue type to display only the most relevant fields. For example, the 'Bug' creation screen will prioritize "Summary," "Description," "Steps to Reproduce," "Environment," "Severity," and "Priority." The 'Test' issue type screen will include "Preconditions," "Test Steps," and "Expected Results."
+    Field Configuration Schemes: Define which fields are mandatory, optional, or hidden for different issue types and contexts. This ensures that essential information is always captured while avoiding unnecessary clutter.
+
+7.4. Permission Schemes:
+    Roles: Establish clear user roles within Jira, such as Administrators, Developers, QA Team, Product Owners, and Stakeholders.
+    Permissions: Define comprehensive permission schemes to control who can create, edit, transition, comment on, and view different issue types, ensuring appropriate access control and data security within the project.
+
+7.6. Component Configuration:
+    Components: Define logical components within the project to categorize issues and facilitate reporting and assignment. Examples include:
+         Authentication & Authorization
+         Resident Portal UI
+         Waste Collector Portal UI
+         Admin Dashboard UI
+         Scheduling Logic (Backend)
+         Notifications Service
+         Database & API
+         Reporting Module
+     This structure helps in filtering issues, assigning them to relevant development teams or individuals, and generating focused reports.
+
+7.7. Dashboard and Filters:
+    CleanCity QA Dashboard: A dedicated dashboard will be created in Jira, populated with gadgets providing real-time visibility into key QA metrics. This includes:
+         Open Bugs by Severity and Priority (pie chart).
+         Bugs Reported vs. Resolved (trend graph).
+         Test Execution Progress ( Xray gadget showing tests passed/failed/blocked for current Test Plan).
+         Test Coverage (linking Stories to Tests via Xray).
+         Bugs by Assignee (bar chart).
+         Quick filters for "My Open Bugs," "Bugs for Current Sprint."
+    JQL (Jira Query Language) Filters: A library of useful JQL filters will be developed for common queries, allowing quick access to specific data sets (e.g., type = Bug AND status in ("Open", "Reopened") ORDER BY priority DESC, type = Test AND "Test Status" = Failed AND "Test Plan" = "Release 1.0", component = "Authentication & Authorization" AND type = Bug).
+
+ 8. Roles and Responsibilities
+1. Teresiah Weru
+Focus Area: Manual Testing, Exploratory Testing, and UI/UX Validation
+Responsibilities:
+•	Test Case Design & Execution:
+o	Create detailed manual test cases for User Management Module (registration, login, profile, RBAC).
+o	Execute test cases for Waste Pickup Scheduling (request creation, status transitions, search/filter).
+•	Exploratory Testing:
+o	Proactively hunt for intentional flaws in high-risk areas (e.g., role-based access violations, form validations).
+o	Document defects with clear steps, screenshots, and videos.
+•	UI/UX Testing:
+o	Verify responsiveness across browsers (Chrome, Firefox, Edge) and devices (Android, desktop).
+o	Validate navigation, input fields, error messages, and notifications.
+•	Test Data Management:
+o	Prepare and maintain datasets for manual testing (e.g., user accounts, pickup requests).
+Tools: Jira (defect logging), Browser DevTools, Postman (basic API checks), Screen capture tools.
+
+2. Susan Ng’ang’a
+Focus Area: Test Automation, Regression Testing, and CI/CD
+Responsibilities:
+•	Automation Framework Setup:
+o	Configure Playwright for end-to-end UI automation (focus on critical paths: login, pickup scheduling).
+o	Write API tests using Jest + Supertest (e.g., validate backend endpoints for pickup status changes).
+•	Regression Testing:
+o	Maintain and execute automated regression suites after each build.
+o	Integrate tests into GitHub Actions/Jenkins for CI/CD pipelines.
+•	Test Reporting:
+o	Generate automated test execution reports and share with the team.
+o	Monitor flaky tests and improve stability.
+•	Collaboration with Devs:
+o	Debug automation failures and identify root causes (e.g., selector issues, timing problems).
+Tools: Playwright, Jest, GitHub Actions/Jenkins, Jira/Xray.
+
+3. Antony Manyenze
+Focus Area: Test Planning, Defect Management, and Compliance
+Responsibilities:
+•	Test Strategy & Coordination:
+o	Oversee adherence to the test plan (traceability, coverage, exit criteria).
+o	Prioritize test cycles (smoke, functional, regression) and assign tasks.
+•	Defect Management:
+o	Review all bug reports in Jira for clarity/accuracy; ensure proper severity/priority tagging.
+o	Triage defects with developers and track resolution progress.
+•	Compliance & Documentation:
+o	Maintain requirement traceability matrices (link tests to user stories).
+o	Ensure test data anonymization and environment reset practices.
+•	Stakeholder Reporting:
+o	Prepare test summary reports (weekly/sprint-end) with metrics (defects, coverage).
+o	Facilitate UAT sessions with Product Owners.
+Tools: Jira/Xray, Confluence (documentation), JQL filters for dashboards.
+
+Collaborative Tasks
+•	Daily Standups: All three sync to discuss progress, blockers, and adjustments.
+•	Exploratory Testing Sessions: Teresiah and Antony pair to uncover edge cases.
+•	Automation Reviews: Susan and Antony validate automation coverage aligns with risks.
+•	Defect Triage: Joint sessions for high-severity bugs.
+
+
+ 9. Test Execution and Reporting
+
+This section outlines how testing will be executed and how results will be reported.
+
+9.1. Test Cycles:  
+Smoke Testing: Quick, high-level tests to ensure the build is stable enough for deeper testing. Will be executed after every new deployment to the QA environment.
+    Functional Testing: Detailed testing of all features as per requirements and design. This will be conducted iteratively within each sprint.
+    Regression Testing: Re-running a carefully selected subset of existing tests to ensure that new changes or bug fixes haven't introduced new defects. Automated regression will be prioritized.
+    Exploratory Testing: Unstructured, heuristic-based testing sessions to uncover hidden issues, learn the application's behavior, and identify intentional flaws.
+    Basic Performance & Security Testing: Integrated within functional testing, focusing on responsiveness, error handling, and basic vulnerability checks.
+    Compatibility Testing: Testing across the specified browsers and devices to ensure consistent functionality and appearance.
+    User Acceptance Testing (UAT): Conducted by Product Owners or selected end-users on the production (or a near-production) environment to validate that the system meets business needs.
+
+9.2. Reporting:
+    Daily Test Execution Status: Brief updates on progress, blockers, and new high-priority bugs during daily stand-up meetings.
+    Weekly QA Team Meetings: Detailed discussions on testing progress, challenges, significant blockers, and upcoming testing priorities.
+    End-of-Sprint/Release Test Summary Reports: Formal reports detailing test coverage achieved, number of bugs found (categorized by severity and priority), overall quality assessment, and any outstanding risks.
+    Real-time Dashboards: Jira dashboards will provide real-time visibility into test execution progress and defect status for all stakeholders.
+
+ 10. Exit Criteria
+The following conditions must be met for testing to be considered complete for a given release or major feature:
+ All Critical (P1) and Major (P2) bugs are resolved and verified as closed.
+ At least 95% of planned test cases for critical paths and core functionalities have passed.
+ No open blocking issues preventing key functionality or further testing.
+ Test coverage for core features meets the predefined threshold (e.g., 80% of critical user stories covered by tests).
+ All identified high-priority risks have been mitigated or accepted by stakeholders.
+ The automated regression suite is stable and shows a consistent passing rate (e.g., >98%).
+ Stakeholder (Product Owner) sign-off on the quality and readiness for release.
+
+ 11. Entry Criteria
+The following conditions must be met before formal testing can commence on a new build or feature:
+ A stable, deployable build/version of the application is available in the designated QA environment.
+ All required test environments are set up, configured, and accessible (as per environment notes).
+ Smoke tests on the newly deployed build have passed successfully, indicating basic functionality is intact.
+ All necessary test data (as per test data requirements) is prepared, loaded, and available in the QA environment. Initial setup scripts for data loading are complete.
+ Key system dependencies (e.g., external APIs, mock services) are functional or appropriately mocked.
+ Requirements or User Stories for the features under test are sufficiently clear, finalized, and signed off by the Product Owner.
+I tests.
+Defect Reports: All bugs tracked and managed within Jira.
+Test Execution Reports: Generated from Jira, detailing test run results.
+Test Summary Reports: End-of-sprint/release quality summaries.
+Test Coverage Reports: Metrics derived from Jira/Xray.
+Release Sign-off Document: Formal acceptance from stakeholders based on testing outcomes.
+Environment Setup Notes: Documentation for setting up and maintaining test environments.
+Initial Setup Scripts: Scripts for environment configuration, data loading, etc.
+
+## 13. Risks and Contingency Plan
+This section identifies potential risks to the testing effort and outlines mitigation strategies.
+
+Risk 1: Unstable Builds / Frequent Breaking Changes
+    Likelihood: Medium (common in early development phases)
+    Impact: High (delays testing, leads to rework)
+    Mitigation Plan: Implement robust CI/CD with automated unit/integration tests; enforce code reviews; maintain strict definition of "Done" for development tasks; provide clear communication channels between Dev and QA.
+    Contingency Plan: Allocate buffer time in sprint planning; prioritize critical path testing first; revert to previous stable builds if necessary.
+
+Risk 2: Insufficient Test Data or Environment Stability
+    Likelihood: Medium (especially with complex data requirements)
+    Impact: High (blocks testing, leads to incomplete coverage)
+    Mitigation Plan: Collaborate closely with Dev for database seeding scripts; define clear test data requirements upfront; establish a dedicated QA environment with regular maintenance.
+    Contingency Plan: Manual data creation for blockers; use mocked services if external dependencies are unstable; escalate environment issues immediately.
+
+Risk 3: Undocumented/Ambiguous Intentional Flaws
+    Likelihood: Low (intentional flaws should be documented for learning)
+    Impact: Medium (might be missed, or time wasted trying to reproduce "bugs" that are intentional features)
+    Mitigation Plan: Maintain a clear, separate document ( Jira component) for intentional flaws, accessible to QA. Regular sync-ups between Dev and QA to discuss these.
+    Contingency Plan: If a suspected intentional flaw is ambiguous, time-box investigation and consult with the development team for clarification.
+
+Risk 4: Automation Script Flakiness / High Maintenance
+    Likelihood: Medium (common with UI automation)
+    Impact: Medium (reduces confidence in automation, increases manual effort)
+    Mitigation Plan: Follow best practices for automation (e.g., explicit waits, robust selectors); conduct regular script reviews; dedicate time for automation maintenance each sprint.
+    Contingency Plan: Prioritize fixing flaky tests; temporarily disable highly unstable tests and rely on manual testing if necessary; invest in better reporting for automation failures.
+
+Risk 5: Resource Constraints / Lack of Specialized Skills
+    Likelihood: Low (for QA students, learning is primary)
+    Impact: Medium (limits testing depth/speed)
+    Mitigation Plan: Cross-train QA team members; leverage external resources/tutorials for new tools/skills; allocate dedicated learning time.
+    Contingency Plan: Focus on core functional testing first; defer non-critical non-functional testing; scale back automation goals if necessary.
